@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      body {
+        margin: 0;
+      }
+      #gauche {
+        float: left;
+        width: 70%;
+        height: 1000px;
+        background-color: #EFECCA;
+      }
+      #droite {
+        background-color: #CEFFF8;
+        height: 1000px;
+        padding : 10px;
+        padding-left: 71%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gauche">
+    </div>
+    <div id="droite">
+      Utilisez ces boutons pour créer votre formulaire<br><br>
+      <button>Label</button>
+      <button>Zone de texte</button>
+      <button>Bouton</button>
+    </div>
+
+    <script src='./jquery.js'></script>
+    <script>
+      $(function() {
+            // Création du conteneur
+            $('div#droite').append('<div id="container">')
+
+            // On définit des ids à nos button pour agir dessus plus aisément
+            var classDiv = ['label','textFields','button']
+            $('button').each(function(i){
+              this.id = classDiv[i]
+            })
+            
+            // On place le texte et les ids qui servirons des champs à remplir
+            var texteIndicatif = ['Texte du label ','id de la zone de texte ','Texte du bouton ']
+            var idInput = ['labelInput','textFieldsInput','buttonInput']
+            // Puis on boucle dessus en créant notre input avec texte + id à chaque fois
+            $('button').each(function(i){
+              $(this).click(function() {
+                $('div#container').show()
+                $('div#container').html(texteIndicatif[i] + '<input type="text" id="'+idInput[i]+'"><input type="submit" class="ok" value="OK">')
+                // Dès lors qu'on clique sur le bouton OK après saisie
+                $('.ok').click(function() {
+                  $('div#container').hide()
+                  $('div#gauche').wrapInner('<span></span>')
+                  // Selon l'id, on crée les champs correspondant
+                  if($('input').attr('id') == 'labelInput') {
+                    // $('div#gauche').wrapInner('<span></span>')
+                    $('span').text($('input#'+ idInput[i]).val())
+                    
+                  }              
+                  else if ($('input').attr('id') == 'textFieldsInput') {
+                    $('span').after('<input type="text" id="'+ $('input#'+idInput[i]).val()+'">')
+                  // console.log('textFieldsInput')
+                  }
+                  else if ($('input').attr('id') == 'buttonInput') {
+                    $('span').after('<button>'+$('input#'+idInput[i]).val()+'</button>')
+                  }
+                
+                })
+                
+              })
+            })
+      })
+    
+
+            // $('div#container').append('<hr>')            
+            // var button = $('button')
+           // button[0].attr('id','label')
+/*
+            $('button').click(function() {
+                
+                $('div#container').append('Texte du label <input type="text" id="label">')
+                $('div#container').append('<input type="submit" value="Ok" id="ok">')
+
+                $('#ok').click(function() {
+                  //var label = ('div#gauche').append($('input#label').val())
+                  //$('input#label').wrap('<span></span>')
+                  $('div#gauche').wrapInner('<span></span>')
+                  $('span').text($('input#label').val())
+                })
+               
+            })
+*/ 
+        
+    </script>
+  </body>
+</html>
