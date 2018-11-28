@@ -30,48 +30,66 @@
       <button>Bouton</button>
     </div>
 
-    <script src='./jquery.js'></script>
+    <script src='../jquery.js'></script>
     <script>
       $(function() {
-            // Création du conteneur
-            $('div#droite').append('<div id="container">')
+            // On met nos sélecteur pour gagner en visibilié et performance
+            var displayContainer = $('div#gauche') 
+            var entryContainer = $('div#droite')
+            displayContainer.html('<form></form>')
+            var createdForm = $('form')
+            createdForm.wrapInner('<span></span>')
+            var result = ""          
+            var spanDisplay = $('span')
+            result += spanDisplay
+            
 
-            // On définit des ids à nos button pour agir dessus plus aisément
-            var classDiv = ['label','textFields','button']
+            // Création du conteneur
+            entryContainer.append('<div id="container">')
+
+            // On définit des ids à nos button pour agir dessus plus facilement
+            var idDiv = ['label','textFields','button']
             $('button').each(function(i){
-              this.id = classDiv[i]
+              this.id = idDiv[i]
             })
             
             // On place le texte et les ids qui servirons des champs à remplir
             var texteIndicatif = ['Texte du label ','id de la zone de texte ','Texte du bouton ']
             var idInput = ['labelInput','textFieldsInput','buttonInput']
+
             // Puis on boucle dessus en créant notre input avec texte + id à chaque fois
             $('button').each(function(i){
               $(this).click(function() {
                 $('div#container').show()
                 $('div#container').html(texteIndicatif[i] + '<input type="text" id="'+idInput[i]+'"><input type="submit" class="ok" value="OK">')
-                // Dès lors qu'on clique sur le bouton OK après saisie
+                
+                // Dès lors qu'on clique sur le bouton OK après saisie                
                 $('.ok').click(function() {
                   $('div#container').hide()
-                  $('div#gauche').wrapInner('<span></span>')
+                  //$('div#gauche').wrapInner('<span></span>')
                   // Selon l'id, on crée les champs correspondant
-                  if($('input').attr('id') == 'labelInput') {
-                    // $('div#gauche').wrapInner('<span></span>')
-                    $('span').text($('input#'+ idInput[i]).val())
-                    
+                  var idItem = $('input').attr('id')
+                  if( idItem == 'labelInput') {
+                    //createdForm.wrapInner('<span></span>')
+                    spanDisplay.text($('input#'+ idInput[i]).val())
+                                        
                   }              
-                  else if ($('input').attr('id') == 'textFieldsInput') {
-                    $('span').after('<input type="text" id="'+ $('input#'+idInput[i]).val()+'">')
+                  else if (idItem == 'textFieldsInput') {
+                    //spanDisplay.after('<input type="text" id="'+ $('input#'+idInput[i]).val()+'">')
                   // console.log('textFieldsInput')
+                  createdForm.append('<input type="text" id="'$('input#'+idInput[i]).val()'">')
+                  //result += "<input type=text id=" + $('input#'+idInput[i]).val() + ">"
                   }
-                  else if ($('input').attr('id') == 'buttonInput') {
-                    $('span').after('<button>'+$('input#'+idInput[i]).val()+'</button>')
+                  else if (idItem == 'buttonInput') {
+                    //spanDisplay.after('<button>'+$('input#'+idInput[i]).val()+'</button>')
+                    createdForm.append('<button>'+$('input#'+idInput[i]).val()+'</button>')
+                    //result += "<button> + $('input#' + idInput[i]).val() + </button>"
                   }
-                
+                                  
                 })
-                
+                //createdForm.append(result)
               })
-            })
+            })            
       })
     
 
